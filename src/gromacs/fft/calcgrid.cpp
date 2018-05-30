@@ -44,6 +44,12 @@
 
 #include "gromacs/utility/fatalerror.h"
 
+static int roundUpToPow2(int n) {
+  int l;
+  for(l=0;n > (1 << l);l++);
+  return 1 << l;
+}
+
 /* The grid sizes below are based on timing of a 3D cubic grid in fftw
  * compiled with SSE using 4 threads in fft5d.c.
  * A grid size is removed when a larger grid is faster.
@@ -164,6 +170,14 @@ real calcFftGrid(FILE *fp,
     *nx = n[XX];
     *ny = n[YY];
     *nz = n[ZZ];
+#if 1
+    if (*nx != roundUpToPow2(*nx) || *ny != roundUpToPow2(*ny) || *nz != roundUpToPow2(*nz)) {
+      *nx = roundUpToPow2(*nx);
+      *ny = roundUpToPow2(*ny);
+      *nz = roundUpToPow2(*nz);
+      return calcFftGrid(fp, box, gridSpacing, minGridPointsPerDim, nx, ny, nz);
+    }
+#endif
     if (nullptr != fp)
     {
         fprintf(fp, "Using a fourier grid of %dx%dx%d, spacing %.3f %.3f %.3f\n",
