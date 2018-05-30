@@ -2,10 +2,9 @@
 This is a fork of GROMACS-2018 with modification for allowing usage of
 SleefDFT instead of FFTW.
 
-The work for modification is not finished. You cannot execute this
-modified code.
+The work for modification is not finished.
 
-The original REAME follows :
+The original README follows :
 
 --
 
